@@ -7,7 +7,7 @@
         <info url="http://esmithy.net/software/" />
     </author>
     <copyright>2011</copyright>
-    <description>A gadget showing video from a local Logitech Alert security camera.</description>
+    <description>A gadget showing snapshots from a Logitech Alert security camera.</description>
     <hosts>
         <host name="sidebar">
             <base type="HTML" apiVersion="1.0.0" src="main.html" />

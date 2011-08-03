@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Komodo Project File - DO NOT EDIT -->
+<project id="d800efce-64f4-4a3b-a4e6-02d6e0875b48" kpf_version="5" name="alertcamera.komodoproject">
+<livefolder id="01433dc1-21d0-46c2-b8ab-8b8a412ca841" idref="d800efce-64f4-4a3b-a4e6-02d6e0875b48" name="css" url="css">
+</livefolder>
+<file id="01eadaed-a97a-4b92-b53d-8ff4087a8c98" idref="d800efce-64f4-4a3b-a4e6-02d6e0875b48" name="readme.txt" url="readme.txt">
+</file>
+<file id="06165008-e809-44d4-9cec-628cbb899b11" idref="d800efce-64f4-4a3b-a4e6-02d6e0875b48" name="main.html" url="main.html">
+</file>
+<file id="7aa34d55-36fe-4859-8155-09e1c838a228" idref="d800efce-64f4-4a3b-a4e6-02d6e0875b48" name="settings.html" url="settings.html">
+</file>
+<livefolder id="b2f36579-44b3-41a6-b950-099e8b836334" idref="d800efce-64f4-4a3b-a4e6-02d6e0875b48" name="js" url="js">
+</livefolder>
+<file id="e9628d83-3a2a-4680-b3e8-2951dfe58476" idref="d800efce-64f4-4a3b-a4e6-02d6e0875b48" name="gadget.xml" url="gadget.xml">
+</file>
+</project>

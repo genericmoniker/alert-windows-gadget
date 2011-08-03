@@ -2,26 +2,15 @@
 <html>
 <head>
 	<title>Alert Camera</title>
-	<link rel="stylesheet" type="text/css" href="style.css" />
-	<script type="text/javascript" src="formatDate.js"></script>
-	<script type="text/javascript">
-/*
-		function documentLoaded() {
-			System.Gadget.settingsUI = "Settings.html";
-			System.Gadget.onSettingsClosed = settingsClosed;
-
-			loadMain();
-		}
-
-		function settingsClosed(event) {
-			if (event.closeAction === event.Action.commit) {
-				loadMain();
-			}
-		}
-*/
-	</script>
+    <meta http-equiv="MSThemeCompatible" CONTENT="yes" />
+    <meta http-equiv="Content-Type" content="text/html; charset=unicode" />
+	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	<script type="text/javascript" src="js/prototype.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/sizer.js"></script>
+	<script type="text/javascript" src="js/settings.js"></script>
 </head>
-<body onload="documentLoaded()">
+<body onload="loadMain();">
 
 <video src="rtsp://192.168.0.186/LowResolutionVideo" autoplay></video>
 
