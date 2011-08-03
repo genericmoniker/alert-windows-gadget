@@ -1,0 +1,1 @@
+It doesn't look like IE does RTSP, and a gadget doesn't appear to even play a recorded mp4.

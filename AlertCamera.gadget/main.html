@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Alert Camera</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<script type="text/javascript" src="formatDate.js"></script>
+	<script type="text/javascript">
+/*
+		function documentLoaded() {
+			System.Gadget.settingsUI = "Settings.html";
+			System.Gadget.onSettingsClosed = settingsClosed;
+
+			loadMain();
+		}
+
+		function settingsClosed(event) {
+			if (event.closeAction === event.Action.commit) {
+				loadMain();
+			}
+		}
+*/
+	</script>
+</head>
+<body onload="documentLoaded()">
+
+<video src="rtsp://192.168.0.186/LowResolutionVideo" autoplay></video>
+
+</body>
+</html>
+
