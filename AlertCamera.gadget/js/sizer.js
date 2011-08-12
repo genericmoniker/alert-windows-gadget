@@ -1,3 +1,5 @@
+// Gadget sizer that handles "docked" and "undocked", which
+// in Windows 7 is really "Larger size" and "Smaller size".
 var sizerCtor = function() {
     var gadgetWidth = 130;
     var gadgetHeight = 98;
