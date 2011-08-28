@@ -1623,14 +1623,15 @@ Ajax.Request = Class.create(Ajax.Base, {
     }
   },
 
-  isSameOrigin: function() {
-    var m = this.url.match(/^\s*https?:\/\/[^\/]*/);
-    return !m || (m[0] == '#{protocol}//#{domain}#{port}'.interpolate({
-      protocol: location.protocol,
-      domain: document.domain,
-      port: location.port ? ':' + location.port : ''
-    }));
-  },
+  // Changed by Eric for use with gadgets:
+  isSameOrigin: function() { return true; },
+//    var m = this.url.match(/^\s*https?:\/\/[^\/]*/);
+//    return !m || (m[0] == '#{protocol}//#{domain}#{port}'.interpolate({
+//      protocol: location.protocol,
+//      domain: document.domain,
+//      port: location.port ? ':' + location.port : ''
+//    }));
+//  },
 
   getHeader: function(name) {
     try {

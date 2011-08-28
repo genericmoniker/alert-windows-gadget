@@ -2,10 +2,11 @@
 function ServiceLocator() {
 
 	// Create services
-	this.localStorage = new LocalStorage();
-	this.prefsService = new PrefsService();
-	this.httpClient = httpClientCtor({ prefsService: this.prefsService });
-	this.authService = authServiceCtor({ httpClient: this.httpClient, localStorage: this.localStorage });
+	this.logger = loggerCtor();
+	this.localStorage = localStorageCtor({ logger: this.logger });
+	this.prefsService = {};
+	this.httpClient = httpClientCtor({ logger: this.logger, prefsService: this.prefsService });
+	this.authService = authServiceCtor({ httpClient: this.httpClient, localStorage: this.localStorage, logger: this.logger });
 	this.siteService = siteServiceCtor({ httpClient: this.httpClient, prefsService: this.prefsService });
 	this.netService = new NetService();
 
@@ -14,6 +15,5 @@ function ServiceLocator() {
 	this.netService.httpClient = this.httpClient;
 	
 	// Other setup
-	this.prefsService.load();
 }
 

@@ -1,10 +1,12 @@
 // HTTP client abstraction.
 // Dependencies:
+// spec.logger
 // spec.prefsService
 var httpClientCtor = function(spec) {
 
 	var authToken = "";
 	var defaultHost = "alert.logitech.com";
+	var logger = spec.logger;
 
 	var setAuthToken = function(token) {
 		authToken = token;
@@ -53,15 +55,16 @@ var httpClientCtor = function(spec) {
 	};
 
 	var handleException = function(response, e) {
-		Mojo.Log.error("HTTP request exception: %s", e.message);
+		logger.log("HTTP request exception: %0", e.message);
 	};
 
 	var handleComplete = function(response) {
-		Mojo.Log.info("HTTP request complete: %j", response);
+		logger.log("HTTP request complete: %0 %1 URL: %2",
+			response.status, response.statusText, response.request.url);
 	};
 
 	var sendRequest = function(relativeURL, options) {
-		var url = resolveURL(relativeURL, options.secure);
+		var url = resolveURL(relativeURL, options.secure, false);
 		options.requestHeaders = options.requestHeaders || {};
 		addAuthorization(options.requestHeaders);
 		options.onException = handleException;

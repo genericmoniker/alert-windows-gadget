@@ -1,11 +1,45 @@
 // Service for sites (and their cameras).
 // Dependencies:
 // spec.httpClient
+// spec.logger
 // spec.prefsService
 var siteServiceCtor = function(spec) {
 
 	var sites = null;
 	var selectedSite = null;
+	var logger = spec.logger;
+	
+	// We want String trim below. Could belong elsewhere.
+	var trim = function(str) {
+		return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+	};
+	
+	// Work around IE's missing parser.
+	// https://sites.google.com/a/van-steenbeek.net/archive/explorer_domparser_parsefromstring
+	if(typeof(DOMParser) == 'undefined') {
+	 DOMParser = function() {}
+	 DOMParser.prototype.parseFromString = function(str, contentType) {
+	  if(typeof(ActiveXObject) != 'undefined') {
+	   var xmldata = new ActiveXObject('MSXML.DomDocument');
+	   xmldata.async = false;
+	   xmldata.loadXML(str);
+	   return xmldata;
+	  } else if(typeof(XMLHttpRequest) != 'undefined') {
+	   var xmldata = new XMLHttpRequest;
+	   if(!contentType) {
+		contentType = 'application/xml';
+	   }
+	   xmldata.open('GET', 'data:' + contentType + ';charset=utf-8,' + encodeURIComponent(str), false);
+	   if(xmldata.overrideMimeType) {
+		xmldata.overrideMimeType(contentType);
+	   }
+	   xmldata.send(null);
+	   return xmldata.responseXML;
+	  } 
+	  logger.log("Couldn't create a suitable XML parser.");
+	  return null;
+	 }
+	}	
 
 	var stringToBoolean = function(s) {
 		return (s == "true");
@@ -61,7 +95,8 @@ var siteServiceCtor = function(spec) {
 	};
 
 	var getChildText = function(element, childName) {
-		return element.getElementsByTagName(childName)[0].textContent.trim();
+		var text = element.getElementsByTagName(childName)[0].textContent;
+		return trim(text);
 	};
 
 	var parseCamera = function(cameraElement) {
@@ -109,7 +144,7 @@ var siteServiceCtor = function(spec) {
 	};
 
 	var loadSites = function(onSuccess, onFailure) {
-		spec.httpClient.get("site.svc/?cameras=all&user=default", null, false,
+		spec.httpClient.get("site.svc/?cameras=all&user=default", null, true,
 			// Success
 			function(response) {
 				sites = parseSites(response.responseText);

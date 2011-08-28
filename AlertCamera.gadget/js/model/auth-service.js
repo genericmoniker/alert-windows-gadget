@@ -2,10 +2,13 @@
 // Dependencies:
 // spec.httpClient
 // spec.localStorage
+// spec.logger
 var authServiceCtor = function(spec) {
 
 	var userIsAuthenticated = false;
 	var username = "";
+	
+	var logger = spec.logger;
 
 	// TODO: This belongs somewhere else
 	var xmlEscape = function(string) {
@@ -51,8 +54,8 @@ var authServiceCtor = function(spec) {
 			function(transport) {
 				var authToken = transport.getHeader("X-Authorization-Token");
 				if (authToken) {
-					Mojo.Log.info("Authenticate succeeded: %s", transport.status);
-					spec.httpClient.authToken = authToken;
+					logger.log("Authenticate succeeded: %0  Token: %1", transport.status, authToken);
+					spec.httpClient.setAuthToken(authToken);
 					if (persist) {
 						spec.localStorage.setValue("authToken", authToken);
 						spec.localStorage.setValue("username", username);
@@ -62,7 +65,7 @@ var authServiceCtor = function(spec) {
 						onSuccess(transport);
 					}
 				} else {
-					Mojo.Log.error("HTTPClient reports success, but no auth token.");
+					logger.log("HTTPClient reports success, but no auth token.");
 					onFailure(transport);
 				}
 			},

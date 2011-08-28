@@ -1,11 +1,18 @@
 ﻿body
 {
-  background-color: black;
+	background-color: black;
+	color: white;
 	background-image:url('background-normal.png');
-  background-repeat:no-repeat;
-  font-family:Calibri;
-	width:130px;
-	height:98px;
-	margin:0px;
-	color:white;
+	background-repeat: no-repeat;
+	font-family: "Segoe UI", "Calibri";
+	font-size: 12px;
+	width: 130px;
+	height: 98px;
+	margin: 0px;
+}
+
+#message
+{
+	font-size: small;
+	margin: 4px;
 }
