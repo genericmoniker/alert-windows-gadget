@@ -17,8 +17,12 @@ var loggerCtor = function() {
 	function dumpObj(obj, name, indent, depth) {
 		indent = indent || "";
 		if (depth > MAX_DUMP_DEPTH) {
-			   return indent + name + ": <Maximum Depth Reached>\n";
+			return indent + name + ": <Maximum Depth Reached>\n";
 		}
+		if (obj == null) {
+			return indent + item + ": (null)\n";
+		}
+		
 		if (typeof obj == "object") {
 			var child = null;
 			var result = indent + name + "\n";
@@ -29,7 +33,9 @@ var loggerCtor = function() {
 				} catch (e) {
 					child = "<Unable to Evaluate>";
 				}
-				if (typeof child == "object") {
+				if (child == null) {
+					result += indent + item + ": (null)\n";
+				} else if (typeof child == "object") {
 					result += dumpObj(child, item, indent, depth + 1);
 				} else if (typeof child == "function") {
 					result += indent + item + ": function\n";

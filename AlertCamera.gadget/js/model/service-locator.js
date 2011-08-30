@@ -7,7 +7,7 @@ function ServiceLocator() {
 	this.prefsService = {};
 	this.httpClient = httpClientCtor({ logger: this.logger, prefsService: this.prefsService });
 	this.authService = authServiceCtor({ httpClient: this.httpClient, localStorage: this.localStorage, logger: this.logger });
-	this.siteService = siteServiceCtor({ httpClient: this.httpClient, prefsService: this.prefsService });
+	this.siteService = siteServiceCtor({ httpClient: this.httpClient, logger: this.logger, prefsService: this.prefsService });
 	this.netService = new NetService();
 
 	// Resolve dependencies

@@ -29,11 +29,11 @@ function buildCameraList() {
 	cameraIndex = 0;
 	services.siteService.loadSites(
 		function(sites) {
-			logger.log("Site count: " + sites.length);
 			for (var s = 0; s < sites.length; ++s) {
-				cameras.concat(sites[s].cameras);
+				cameras = cameras.concat(sites[s].cameras);
 			}
 			intervalId = setInterval(switchCamera, SWITCH_INTERVAL);
+			logger.log("cameras: %0", cameras);
 		},
 		function() {
 			// todo (failure)
@@ -48,6 +48,8 @@ function onLoginFailure() {
 
 function onCredentialsNeeded() {
 	showMessage("Please click the options icon to log in to your account.");
+	// TEMPORARY!
+	login("ericsmith@byu.net", "video.1");
 }
 
 function login(username, password) {

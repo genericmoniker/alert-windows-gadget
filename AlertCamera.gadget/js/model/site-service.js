@@ -14,33 +14,6 @@ var siteServiceCtor = function(spec) {
 		return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 	};
 	
-	// Work around IE's missing parser.
-	// https://sites.google.com/a/van-steenbeek.net/archive/explorer_domparser_parsefromstring
-	if(typeof(DOMParser) == 'undefined') {
-	 DOMParser = function() {}
-	 DOMParser.prototype.parseFromString = function(str, contentType) {
-	  if(typeof(ActiveXObject) != 'undefined') {
-	   var xmldata = new ActiveXObject('MSXML.DomDocument');
-	   xmldata.async = false;
-	   xmldata.loadXML(str);
-	   return xmldata;
-	  } else if(typeof(XMLHttpRequest) != 'undefined') {
-	   var xmldata = new XMLHttpRequest;
-	   if(!contentType) {
-		contentType = 'application/xml';
-	   }
-	   xmldata.open('GET', 'data:' + contentType + ';charset=utf-8,' + encodeURIComponent(str), false);
-	   if(xmldata.overrideMimeType) {
-		xmldata.overrideMimeType(contentType);
-	   }
-	   xmldata.send(null);
-	   return xmldata.responseXML;
-	  } 
-	  logger.log("Couldn't create a suitable XML parser.");
-	  return null;
-	 }
-	}	
-
 	var stringToBoolean = function(s) {
 		return (s == "true");
 	};
@@ -95,7 +68,7 @@ var siteServiceCtor = function(spec) {
 	};
 
 	var getChildText = function(element, childName) {
-		var text = element.getElementsByTagName(childName)[0].textContent;
+		var text = element.getElementsByTagName(childName)[0].childNodes[0].nodeValue;
 		return trim(text);
 	};
 
@@ -115,6 +88,7 @@ var siteServiceCtor = function(spec) {
 		// camera.snapshot = new Image();
 		// camera.snapshot.src = camera.snapshotURL();
 		camera.className = getCameraClassName(camera);
+		logger.log("Camera: %0", camera);
 		return camera;
 	};
 
@@ -133,9 +107,8 @@ var siteServiceCtor = function(spec) {
 	};
 
 	var parseSites = function(xml) {
-		var xmlDoc = (new DOMParser()).parseFromString(xml, "application/xml");
+		var siteElements = xml.getElementsByTagName("SiteInfo");
 		var result = [];
-		var siteElements = xmlDoc.getElementsByTagName("SiteInfo");
 		for (var s = 0; s < siteElements.length; ++s) {
 			var site = parseSite(siteElements[s]);
 			result.push(site);
@@ -147,7 +120,7 @@ var siteServiceCtor = function(spec) {
 		spec.httpClient.get("site.svc/?cameras=all&user=default", null, true,
 			// Success
 			function(response) {
-				sites = parseSites(response.responseText);
+				sites = parseSites(response.responseXML);
 				selectedSite = getInitialSelectedSite();
 				onSuccess(sites);
 			},
