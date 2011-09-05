@@ -1,21 +1,35 @@
 // Gadget sizer that handles "docked" and "undocked", which
 // in Windows 7 is really "Larger size" and "Smaller size".
 var sizerCtor = function() {
-    var gadgetWidth = 130;
-    var gadgetHeight = 98;
-
-    // Amount to scale gadget when docked or undocked.
-    var scaleDocked = 1;
-    var scaleUndocked = 2;
-
     var updateSize = function() {
-        var bodyStyle = document.body.style;
         if (System.Gadget.docked) {
-            bodyStyle.width = gadgetWidth * scaleDocked;
-            bodyStyle.height = gadgetHeight * scaleDocked;
+			$(document.body).setStyle({
+				width: 130,
+				height: 100
+			});
+			System.Gadget.background = "url(img/background-docked.png)";
+			$("snapshot").setStyle({
+				'width': 120,
+				'height': 90
+			});
+			$("container").setStyle({
+				'padding-top': 5,
+				'padding-left': 4
+			});
         } else {
-            bodyStyle.width = gadgetWidth * scaleUndocked;
-            bodyStyle.height = gadgetHeight * scaleUndocked;
+			$(document.body).setStyle({
+				width: 360,
+				height: 280
+			});
+			System.Gadget.background = "url(img/background-undocked.png)";
+			$("snapshot").setStyle({
+				'width': 319,
+				'height': 240
+			});
+			$("container").setStyle({
+				'padding-top': 16,
+				'padding-left': 17
+			});
         }
     };
 

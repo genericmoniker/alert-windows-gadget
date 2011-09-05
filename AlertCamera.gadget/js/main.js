@@ -10,7 +10,12 @@ var intervalId = null;
 var logger;
 
 function showMessage(message) {
-	$("message").show().innerHTML += message + " ";
+	$("message").show();
+//	$("message-icon").src = "img/info.png";
+	$("message-text").innerText = " " + message;
+}
+function hideMessage() {
+	$("message").hide();
 }
 
 function showCameraSnapshot() {
@@ -43,13 +48,13 @@ function buildCameraList() {
 
 function onLoginFailure() {
 	// todo
-	showMessage("login failure");
+	showMessage("Log in failed.");
 }
 
 function onCredentialsNeeded() {
-	showMessage("Please click the options icon to log in to your account.");
+	showMessage("Log in using the Options button.");
 	// TEMPORARY!
-	login("ericsmith@byu.net", "video.1");
+	//login("username", "password");
 }
 
 function login(username, password) {
@@ -68,6 +73,7 @@ function login(username, password) {
 
 function settingsClosed(event) {
 	if (event.closeAction === event.Action.commit) {
+		hideMessage();
 		cameras = [];
 		if (intervalId) {
 			clearInterval(intervalId);
@@ -79,11 +85,28 @@ function settingsClosed(event) {
 	}
 }
 
+function mockForBrowser() {
+	if (typeof System == "undefined") {
+		System = {
+			Gadget:{
+				Settings: { readString: function(){}, writeString: function(){} }
+			},
+			Debug: {
+				outputString: function(text) { console.log(text);}
+			}
+		};
+	}
+}
+
+
 function loadMain() {
+	mockForBrowser();
 	services = new ServiceLocator();
 	logger = services.logger;
+	
 	System.Gadget.settingsUI = "settings.html";
 	System.Gadget.onSettingsClosed = settingsClosed;	
+	
 	sizer = sizerCtor();
   
 	login();
