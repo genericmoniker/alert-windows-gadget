@@ -19,9 +19,12 @@ function hideMessage() {
 }
 
 function showCameraSnapshot() {
+	var url = cameras[cameraIndex].snapshotURL;
+	url += (url.indexOf("?") < 0) ? "?" : "&";
+	url += "nocache=" + new Date().getTime();
+	logger.log("Camera snapshot URL: %0", url.toString());
 	$("message").hide();
-	$("snapshot").show().src = cameras[cameraIndex].snapshotURL;
-	logger.log(cameras[cameraIndex].snapshotURL);
+	$("snapshot").show().src = url;
 }
 
 function switchCamera() {
