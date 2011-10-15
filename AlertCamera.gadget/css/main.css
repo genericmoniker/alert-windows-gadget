@@ -16,18 +16,32 @@
 	padding: 4px;
 	width: 100%;
 	height: 100%;
-
-	background-image: url("../img/logo.png");
-	background-repeat: no-repeat;
-	background-position: center;
 }
 
 #message
 {
 	font-size: small;
-	margin-top: 30%;
-	margin-bottom: 4px;
-	margin-left: -5px;
-	margin-right: 7px;
 	text-align: center;
 }
+
+#message-icon
+{
+	vertical-align:middle;
+}
+
+.message-docked
+{
+	margin-top: 20px;
+	margin-bottom: 4px;
+	margin-left: 0px;
+	margin-right: 12px;
+}
+
+.message-undocked
+{
+	margin-top: 80px;
+	margin-bottom: 4px;
+	margin-left: 0px;
+	margin-right: 12px;
+}
+

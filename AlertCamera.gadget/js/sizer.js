@@ -16,6 +16,7 @@ var sizerCtor = function() {
 				'padding-top': 5,
 				'padding-left': 4
 			});
+			$("message").className = "message-docked";
         } else {
 			$(document.body).setStyle({
 				width: 360,
@@ -30,6 +31,7 @@ var sizerCtor = function() {
 				'padding-top': 16,
 				'padding-left': 17
 			});
+			$("message").className = "message-undocked";
         }
     };
 

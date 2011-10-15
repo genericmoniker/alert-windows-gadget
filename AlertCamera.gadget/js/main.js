@@ -11,9 +11,16 @@ var logger;
 
 function showMessage(message) {
 	$("message").show();
-//	$("message-icon").src = "img/info.png";
-	$("message-text").innerText = " " + message;
+	$("message-icon").src = "img/info.png";
+	$("message-text").update(" " + message);
 }
+
+function showBusyMessage() {
+	$("message").show();
+	$("message-icon").src = "img/busy.gif";
+	$("message-text").update(" Loading data");
+}
+
 function hideMessage() {
 	$("message").hide();
 }
@@ -23,7 +30,7 @@ function showCameraSnapshot() {
 	url += (url.indexOf("?") < 0) ? "?" : "&";
 	url += "nocache=" + new Date().getTime();
 	logger.log("Camera snapshot URL: %0", url.toString());
-	$("message").hide();
+	hideMessage();
 	$("snapshot").show().src = url;
 }
 
@@ -40,6 +47,9 @@ function buildCameraList() {
 			for (var s = 0; s < sites.length; ++s) {
 				cameras = cameras.concat(sites[s].cameras);
 			}
+			
+			// Switch now and later.
+			switchCamera();
 			intervalId = setInterval(switchCamera, SWITCH_INTERVAL);
 			logger.log("cameras: %0", cameras);
 		},
@@ -55,13 +65,14 @@ function onLoginFailure() {
 }
 
 function onCredentialsNeeded() {
-	showMessage("Log in using the Options button.");
+	showMessage("Please log in.");
 	// TEMPORARY!
 	//login("username", "password");
 }
 
 function login(username, password) {
 	if (services) {
+		showBusyMessage();
 		if (username) {
 			services.authService.authenticate(
 			  username, password, true, buildCameraList, onLoginFailure
@@ -104,7 +115,7 @@ function mockForBrowser() {
 
 function loadMain() {
 	mockForBrowser();
-	services = new ServiceLocator();
+	services = new GadgetServiceLocator();
 	logger = services.logger;
 	
 	System.Gadget.settingsUI = "settings.html";
@@ -112,5 +123,6 @@ function loadMain() {
 	
 	sizer = sizerCtor();
   
+	showBusyMessage();
 	login();
 }
