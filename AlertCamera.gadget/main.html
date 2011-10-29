@@ -8,12 +8,15 @@
 	<script type="text/javascript" src="js/prototype.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/sizer.js"></script>
-	<script type="text/javascript" src="js/alert.js"></script>
+	<script type="text/javascript" src="js/alert-min.js"></script>
 </head>
 <body onload="loadMain();">
 <g:background id="backgroundImg">
 	<div id="container">
 		<img id="snapshot" style="display: none"></img>
+		<div id="caption" style="display:none">
+			<span id="caption-text"></span>
+		</div>
 		<div id="message" style="display: none;">
 			<img id="message-icon" src="img/info.png"/>
 			<span id="message-text"></span>

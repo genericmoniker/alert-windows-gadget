@@ -16,6 +16,28 @@
 	padding: 4px;
 	width: 100%;
 	height: 100%;
+	position: relative;
+}
+
+#caption
+{
+	color: white;
+	background: rgba(0, 0, 0, 0.3);
+	font-family: Arial;
+	font-size: 8pt;
+	padding: 5px;
+	position: absolute;
+	bottom: 10px;
+	left: 5px;
+	border-radius: 5px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-align: center;
+	text-overflow: ellipsis;
+}
+
+#caption-text
+{
 }
 
 #message

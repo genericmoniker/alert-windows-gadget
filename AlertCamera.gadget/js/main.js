@@ -13,16 +13,19 @@ function showMessage(message) {
 	$("message").show();
 	$("message-icon").src = "img/info.png";
 	$("message-text").update(" " + message);
+	$("snapshot").hide();
 }
 
 function showBusyMessage() {
 	$("message").show();
 	$("message-icon").src = "img/busy.gif";
 	$("message-text").update(" Loading data");
+	$("snapshot").hide();
 }
 
 function hideMessage() {
 	$("message").hide();
+	$("snapshot").show();
 }
 
 function showCameraSnapshot() {
@@ -30,8 +33,7 @@ function showCameraSnapshot() {
 	url += (url.indexOf("?") < 0) ? "?" : "&";
 	url += "nocache=" + new Date().getTime();
 	logger.log("Camera snapshot URL: %0", url.toString());
-	hideMessage();
-	$("snapshot").show().src = url;
+	$("snapshot").src = url;
 }
 
 function switchCamera() {
@@ -43,17 +45,17 @@ function buildCameraList() {
 	cameras = [];
 	cameraIndex = 0;
 	services.siteService.loadSites(
-		function(sites) {
+		function (sites) {
 			for (var s = 0; s < sites.length; ++s) {
 				cameras = cameras.concat(sites[s].cameras);
 			}
 			
-			// Switch now and later.
-			switchCamera();
+			// Show the first camera and schedule to switch.
+			showCameraSnapshot();
 			intervalId = setInterval(switchCamera, SWITCH_INTERVAL);
 			logger.log("cameras: %0", cameras);
 		},
-		function() {
+		function () {
 			// todo (failure)
 		}
 	);
@@ -112,6 +114,30 @@ function mockForBrowser() {
 	}
 }
 
+function setupHover() {
+	$("container").observe("mouseenter", function (event) {
+		$("caption").show();
+	});
+	
+	$("container").observe("mouseleave", function (event) {
+		$("caption").hide();
+	});
+}
+
+function setupImageEvents() {
+	$("snapshot").observe("load", function (event) {
+		var name = cameras[cameraIndex].name;
+		$("caption-text").update(name);
+		$("snapshot").show();
+		hideMessage();
+	});
+	$("snapshot").observe("error", function (event) {
+		var name = cameras[cameraIndex].name;
+		logger.log("Image load error. Assuming %0 is offline.", name);
+		showMessage(name + "(offline)");
+	});
+}
+
 
 function loadMain() {
 	mockForBrowser();
@@ -123,6 +149,8 @@ function loadMain() {
 	
 	sizer = sizerCtor();
   
+//	setupHover();
+	setupImageEvents();
 	showBusyMessage();
 	login();
 }
