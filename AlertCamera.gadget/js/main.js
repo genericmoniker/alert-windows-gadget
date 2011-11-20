@@ -1,5 +1,6 @@
 
 var SWITCH_INTERVAL = 10000;
+var RETRY_TIMEOUT = 10000;
 
 var settings = null;
 var sizer = null;
@@ -7,6 +8,7 @@ var services = null;
 var cameras = [];
 var cameraIndex = 0;
 var intervalId = null;
+var siteLoadTry = 1;
 var logger;
 
 function showMessage(message) {
@@ -28,6 +30,10 @@ function hideMessage() {
 	$("snapshot").show();
 }
 
+function retry(what, when) {
+	setTimeout(what, when);
+}
+
 function showCameraSnapshot() {
 	var url = cameras[cameraIndex].snapshotURL;
 	url += (url.indexOf("?") < 0) ? "?" : "&";
@@ -44,8 +50,10 @@ function switchCamera() {
 function buildCameraList() {
 	cameras = [];
 	cameraIndex = 0;
+	logger.log("Loading sites/cameras...");
 	services.siteService.loadSites(
 		function (sites) {
+			siteLoadTry = 0;
 			for (var s = 0; s < sites.length; ++s) {
 				cameras = cameras.concat(sites[s].cameras);
 			}
@@ -56,14 +64,16 @@ function buildCameraList() {
 			logger.log("cameras: %0", cameras);
 		},
 		function () {
-			// todo (failure)
+			logger.log("Error loading sites/cameras. Try %0", siteLoadTry);
+			showMessage("Problem loading data. Retrying in a few seconds. " + siteLoadTry++);
+			retry(buildCameraList, RETRY_TIMEOUT);
 		}
 	);
 }
 
 function onLoginFailure() {
 	// todo
-	showMessage("Log in failed.");
+	showMessage("Log in failed.<br>Try again.");
 }
 
 function onCredentialsNeeded() {
@@ -84,6 +94,10 @@ function login(username, password) {
 			  buildCameraList, onLoginFailure, onCredentialsNeeded
 			);
 		}
+	}
+	else {
+		showMessage("Internal error 1");
+		logger.log("Services unexpectedly uninitialized.")
 	}
 }
 
