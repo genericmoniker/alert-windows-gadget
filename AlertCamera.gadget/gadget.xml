@@ -2,7 +2,7 @@
 <gadget>
     <name>Alert Camera</name>
     <namespace>esmithy.net</namespace>
-    <version>0.1.0</version>
+    <version>0.4.0</version>
     <author name="Eric Smith">
         <info url="http://esmithy.net/software/" />
     </author>

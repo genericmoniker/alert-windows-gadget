@@ -67,3 +67,9 @@
 	margin-right: 12px;
 }
 
+#update
+{
+	position: absolute;
+	bottom: 12px;
+	left: 5px;
+}

@@ -162,6 +162,18 @@ function loadMain() {
 	System.Gadget.onSettingsClosed = settingsClosed;	
 	
 	sizer = sizerCtor();
+	
+	var vc = versionCheckCtor({
+		logger: logger,
+		versionURL: "http://esmithy.net/software_files/camera-gadget/version.json"
+	});
+	
+	vc.check(function (versionInfo) {
+			logger.log("New version is available.");
+			$("update_link").href = versionInfo.url;
+			$("update_link").title = "Version " + versionInfo.version + " is available";
+			$("update").show();
+		});
   
 //	setupHover();
 	setupImageEvents();
