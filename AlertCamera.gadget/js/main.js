@@ -62,6 +62,11 @@ function buildCameraList() {
 			showCameraSnapshot();
 			intervalId = setInterval(switchCamera, SWITCH_INTERVAL);
 			logger.log("cameras: %0", cameras);
+			
+			// Click goes to alert.logitech.com (Shell.execute uses default browser)
+			$('snapshot').observe('click', function (event) {
+				System.Shell.execute('http://alert.logitech.com')
+			});
 		},
 		function () {
 			logger.log("Error loading sites/cameras. Try %0", siteLoadTry);
