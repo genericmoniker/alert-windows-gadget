@@ -5,6 +5,7 @@
 	
 	<property name="version" value="0.5.0"/>
 	<property name="win.bin" value="AlertCamera.gadget"/>
+	<property name="mac.bin" value="AlertCamera.wdgt"/>
 	
 	<tstamp>
 		<format property="year" pattern="yyyy"/>
@@ -21,7 +22,13 @@
 	</target>
 	
 	<target name="package-mac" depends="templates">
-		<!-- TODO -->
+		<delete dir="${mac.bin}"/>
+		<mkdir dir="${mac.bin}"/>
+		<copy todir="${mac.bin}">
+			<fileset dir="."
+				includes="css/*, img/*, js/*, Info.plist, main.html"/>
+		</copy>
+		<!-- TODO: Need Default.png and Icon.png -->
 	</target>
 	
 	<target name="templates"
