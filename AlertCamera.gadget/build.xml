@@ -4,21 +4,28 @@
     </description>
 	
 	<property name="version" value="0.5.0"/>
+	<property name="win.bin" value="AlertCamera.gadget"/>
+	
 	<tstamp>
 		<format property="year" pattern="yyyy"/>
 	</tstamp>
 	
-	<target name="package" depends="package-win"/>
+	<target name="package" depends="package-win, package-mac"
+			description="Packages binaries from source files"/>
 	
 	<target name="package-win" depends="templates"
 			description="Packages the Windows version">
-		<zip destfile="AlertCamera.gadget" basedir="."
+		<zip destfile="${win.bin}" basedir="."
 			 includes="css/*, img/*, js/*, gadget.xml, main.html, settings.html">
 		</zip>
 	</target>
 	
+	<target name="package-mac" depends="templates">
+		<!-- TODO -->
+	</target>
+	
 	<target name="templates"
-			description="Runs template replacements">
+			description="Runs replacements on any template.* files">
 		<copy todir=".">
 			<fileset dir="." includes="template.*"/>
 			<globmapper from="template.*" to="*"/>
@@ -27,6 +34,17 @@
 				<filter token="YEAR" value="${year}"/>
 			</filterset>
 		</copy>
+	</target>
+	
+	<target name="deploy" depends="package"
+			description="FTPs the binaries to esmithy.net for release">
+		<input message="Enter FTP password:" addproperty="ftp.password">
+			<handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+		</input>
+		<ftp server="esmithy.net" userid="esmithynet" password="${ftp.password}"
+			 action="put" remotedir="/software_files/camera-gadget">
+			<fileset dir="." includes="${win.bin}, version.json"/>
+		</ftp>
 	</target>
 	
 </project>
