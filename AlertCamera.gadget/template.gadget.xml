@@ -2,11 +2,11 @@
 <gadget>
     <name>Alert Camera</name>
     <namespace>esmithy.net</namespace>
-    <version>0.5.0</version>
+    <version>@VERSION@</version>
     <author name="Eric Smith">
         <info url="http://esmithy.net/software/" />
     </author>
-    <copyright>2011</copyright>
+    <copyright>Copyright @YEAR@ by Eric Smith. All rights reserved.</copyright>
     <description>A gadget showing snapshots from a Logitech Alert security camera.</description>
     <hosts>
         <host name="sidebar">

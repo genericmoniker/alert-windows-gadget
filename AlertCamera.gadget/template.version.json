@@ -1,4 +1,4 @@
 {
-	"version":"0.5.0",
+	"version":"@VERSION@",
 	"url":"http://esmithy.net/software/camera-gadget/"
 }

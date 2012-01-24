@@ -1,0 +1,32 @@
+<project name="Alert Camera Gadget" default="package" basedir=".">
+    <description>
+        Desktop gadget for Logitech Alert
+    </description>
+	
+	<property name="version" value="0.5.0"/>
+	<tstamp>
+		<format property="year" pattern="yyyy"/>
+	</tstamp>
+	
+	<target name="package" depends="package-win"/>
+	
+	<target name="package-win" depends="templates"
+			description="Packages the Windows version">
+		<zip destfile="AlertCamera.gadget" basedir="."
+			 includes="css/*, img/*, js/*, gadget.xml, main.html, settings.html">
+		</zip>
+	</target>
+	
+	<target name="templates"
+			description="Runs template replacements">
+		<copy todir=".">
+			<fileset dir="." includes="template.*"/>
+			<globmapper from="template.*" to="*"/>
+			<filterset>
+				<filter token="VERSION" value="${version}"/>
+				<filter token="YEAR" value="${year}"/>
+			</filterset>
+		</copy>
+	</target>
+	
+</project>
