@@ -28,7 +28,9 @@
 			<fileset dir="."
 				includes="css/*, img/*, js/*, Info.plist, main.html"/>
 		</copy>
-		<!-- TODO: Need Default.png and Icon.png -->
+		<copy file="img/background-docked.png" todir="${mac.bin}"/>
+		<move file="${mac.bin}/background-docked.png" tofile="${mac.bin}/Default.png"/>
+		<!-- TODO: Need Icon.png -->
 	</target>
 	
 	<target name="templates"
