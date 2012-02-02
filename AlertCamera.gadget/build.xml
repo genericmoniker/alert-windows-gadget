@@ -30,7 +30,8 @@
 		</copy>
 		<copy file="img/background-docked.png" todir="${mac.bin}"/>
 		<move file="${mac.bin}/background-docked.png" tofile="${mac.bin}/Default.png"/>
-		<!-- TODO: Need Icon.png -->
+		<!-- TODO: Add Icon.png -->
+		<zip destfile="${mac.bin}.zip" basedir="." includes="${mac.bin}"/>
 	</target>
 	
 	<target name="templates"
