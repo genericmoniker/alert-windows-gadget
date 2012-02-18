@@ -4,40 +4,77 @@
     </description>
 	
 	<property name="version" value="0.5.0"/>
-	<property name="win.bin" value="AlertCamera.gadget"/>
-	<property name="mac.bin" value="AlertCamera.wdgt"/>
+	<property name="win.src" value="src/win"/>
+	<property name="mac.src" value="src/mac"/>
+	<property name="win.tmp" value="target/win/tmp"/>
+	<property name="mac.tmp" value="target/mac/tmp"/>
+	<property name="win.bin" value="target/win/AlertCamera.gadget"/>
+	<property name="mac.bin" value="target/mac/AlertCamera.wdgt"/>
 	
 	<tstamp>
 		<format property="year" pattern="yyyy"/>
 	</tstamp>
 	
+	<target name="clean"
+			description="Cleans all output">
+		<delete dir="target"/>
+	</target>
+	
+	<target name="build" depends="build-win, build-mac"
+			description="Builds the binaries">
+	</target>
+	
+	<target name="build-win">
+		<antcall target="build-internal">
+			<param name="src" value="${win.src}"/>
+			<param name="tmp" value="${win.tmp}"/>
+		</antcall>
+	</target>
+	
+	<target name="build-mac">
+		<antcall target="build-internal">
+			<param name="src" value="${mac.src}"/>
+			<param name="tmp" value="${mac.tmp}"/>
+		</antcall>
+	</target>
+	
+	<target name="build-internal">
+		<mkdir dir="${tmp}"/>
+		<copy todir="${tmp}">
+			<fileset dir="${src}" includes="**/*"/>
+			<fileset dir="src/common" includes="**/*"/>
+			<fileset dir="lib/runtime" includes="**/*"/>
+		</copy>
+		<antcall target="templates">
+			<param name="templates.dir" value="${tmp}"/>
+		</antcall>
+	</target>	
+	
 	<target name="package" depends="package-win, package-mac"
 			description="Packages binaries from source files"/>
 	
-	<target name="package-win" depends="templates"
+	<target name="package-win" depends="build-win"
 			description="Packages the Windows version">
-		<zip destfile="${win.bin}" basedir="."
+		<zip destfile="${win.bin}" basedir="${win.tmp}"
 			 includes="css/*, img/*, js/*, gadget.xml, main.html, settings.html">
 		</zip>
 	</target>
 	
-	<target name="package-mac" depends="templates">
+	<target name="package-mac" depends="build-mac"
+			description="Packages the Mac version">
 		<delete dir="${mac.bin}"/>
 		<mkdir dir="${mac.bin}"/>
 		<copy todir="${mac.bin}">
-			<fileset dir="."
+			<fileset dir="${mac.tmp}"
 				includes="css/*, img/*, js/*, Info.plist, main.html"/>
 		</copy>
-		<copy file="img/background-docked.png" todir="${mac.bin}"/>
-		<move file="${mac.bin}/background-docked.png" tofile="${mac.bin}/Default.png"/>
-		<!-- TODO: Add Icon.png -->
-		<zip destfile="${mac.bin}.zip" basedir="." includes="${mac.bin}"/>
+		<zip destfile="${mac.bin}.zip" basedir="${mac.bin}" includes="**/*"/>
 	</target>
 	
 	<target name="templates"
 			description="Runs replacements on any template.* files">
-		<copy todir=".">
-			<fileset dir="." includes="template.*"/>
+		<copy todir="${templates.dir}">
+			<fileset dir="${templates.dir}" includes="template.*"/>
 			<globmapper from="template.*" to="*"/>
 			<filterset>
 				<filter token="VERSION" value="${version}"/>
