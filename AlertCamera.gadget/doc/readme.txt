@@ -1,11 +1,7 @@
 Alert Camera Gadget
 
-The version is maintained in 3 places right now (unfortunately):
-
-1. gadget.xml
-2. version.json - upload this to /software_files/camera-gadget to set the online
-	version of the gadget for the version check.
-3. The gadget download WordPress page.
+Use ant deploy to push the gadgets to esmithy.net. Don't forget to update the version
+in build.xml, then on the description WordPress page.
 
 == WINDOWS ==
 

@@ -1,4 +1,4 @@
-<project name="Alert Camera Gadget" default="package" basedir=".">
+<project name="Alert Camera Gadget" default="install-win" basedir=".">
     <description>
         Desktop gadget for Logitech Alert
     </description>
@@ -81,6 +81,15 @@
 				<filter token="YEAR" value="${year}"/>
 			</filterset>
 		</copy>
+	</target>
+	
+	<target name="install-win" depends="package-win"
+			description="Installs the Windows gadget">
+		<property name="install.dir"
+				  value="${user.home}/AppData/Local/Microsoft/Windows Sidebar/Gadgets/AlertCamera.gadget"/>
+		<delete dir="${install.dir}"/>
+		<mkdir dir="${install.dir}"/>
+		<unzip src="${win.bin}" dest="${install.dir}"/>
 	</target>
 	
 	<target name="deploy" depends="package"
