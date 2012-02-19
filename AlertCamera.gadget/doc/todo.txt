@@ -1,0 +1,6 @@
+Alert Camera Gadget To Do
+-------------------------
+[ ] Split out common main.js functionality for win/mac
+[ ] Get the Mac version to work
+[ ] Minify all Javascript
+[ ] The spinner graphic seems to have some little glitches
