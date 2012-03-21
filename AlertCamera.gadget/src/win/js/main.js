@@ -1,14 +1,16 @@
 
 var SWITCH_INTERVAL = 10000;
 var RETRY_TIMEOUT = 10000;
+var REBUILD_LIST_COUNT = 30;
 
 var settings = null;
 var sizer = null;
 var services = null;
 var cameras = [];
 var cameraIndex = 0;
-var intervalId = null;
+var timeoutId = null;
 var siteLoadTry = 1;
+var cameraSwitchCount = 0;
 var logger;
 
 function showMessage(message) {
@@ -44,7 +46,13 @@ function showCameraSnapshot() {
 
 function switchCamera() {
 	cameraIndex = ++cameraIndex % cameras.length;
-	showCameraSnapshot();
+	if (++cameraSwitchCount >= REBUILD_LIST_COUNT && cameraIndex == 0) {
+		cameraSwitchCount = 0;
+		buildCameraList()
+	} else {
+		showCameraSnapshot();
+		timeoutId = setTimeout(switchCamera, SWITCH_INTERVAL);
+	}
 }
 
 function buildCameraList() {
@@ -60,7 +68,7 @@ function buildCameraList() {
 			
 			// Show the first camera and schedule to switch.
 			showCameraSnapshot();
-			intervalId = setInterval(switchCamera, SWITCH_INTERVAL);
+			timeoutId = setTimeout(switchCamera, SWITCH_INTERVAL);
 			logger.log("cameras: %0", cameras);
 			
 			// Click goes to alert.logitech.com (Shell.execute uses default browser)
@@ -77,7 +85,7 @@ function buildCameraList() {
 }
 
 function onLoginFailure() {
-	// todo
+	// todo - password wrong or server error?
 	showMessage("Log in failed.<br>Try again.");
 }
 
@@ -110,8 +118,8 @@ function settingsClosed(event) {
 	if (event.closeAction === event.Action.commit) {
 		hideMessage();
 		cameras = [];
-		if (intervalId) {
-			clearInterval(intervalId);
+		if (timeoutId) {
+			clearTimeout(timeoutId);
 		}
 		login(
 		  services.localStorage.getValue("username"),

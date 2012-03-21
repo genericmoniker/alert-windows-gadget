@@ -7,7 +7,7 @@
         <info url="http://esmithy.net/software/" />
     </author>
     <copyright>Copyright @YEAR@ by Eric Smith. All rights reserved.</copyright>
-    <description>A gadget showing snapshots from a Logitech Alert security camera.</description>
+    <description>A gadget showing snapshots from Logitech Alert security cameras.</description>
     <hosts>
         <host name="sidebar">
             <base type="HTML" apiVersion="1.0.0" src="main.html" />
