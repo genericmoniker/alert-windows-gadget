@@ -13,6 +13,8 @@ var siteLoadTry = 1;
 var cameraSwitchCount = 0;
 var logger;
 
+String.prototype.trim=function(){return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');};
+
 function showMessage(message) {
 	$("message").show();
 	$("message-icon").src = "img/info.png";
@@ -66,6 +68,8 @@ function buildCameraList() {
 				cameras = cameras.concat(sites[s].cameras);
 			}
 			
+			cameras = filterCameras(cameras);
+			
 			// Show the first camera and schedule to switch.
 			showCameraSnapshot();
 			timeoutId = setTimeout(switchCamera, SWITCH_INTERVAL);
@@ -82,6 +86,26 @@ function buildCameraList() {
 			retry(buildCameraList, RETRY_TIMEOUT);
 		}
 	);
+}
+
+function filterCameras(cameras) {
+	filters = services.localStorage.getValue("filter").split(',');
+	for (var i = 0; i < filters.length; i++) {
+		filters[i] = filters[i].trim().toUpperCase();
+	}
+	logger.log("filter list: %0", filters);
+	
+	for (var j = 0; j < filters.length; j++) {
+		for (var k = 0; k < cameras.length; k++) {
+			var name = cameras[k].name.toUpperCase();
+			if (name === filters[j]) {
+				logger.log('Filtering camera %0', name);
+				cameras.splice(k, 1);
+				break;
+			}
+		}
+	}
+	return cameras;
 }
 
 function onLoginFailure() {
