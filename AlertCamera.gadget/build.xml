@@ -6,10 +6,14 @@
 	<property name="version" value="0.6.0"/>
 	<property name="win.src" value="src/win"/>
 	<property name="mac.src" value="src/mac"/>
-	<property name="win.tmp" value="target/win/tmp"/>
-	<property name="mac.tmp" value="target/mac/tmp"/>
-	<property name="win.bin" value="target/win/AlertCamera.gadget"/>
-	<property name="mac.bin" value="target/mac/AlertCamera.wdgt"/>
+	<property name="win.trg" value="target/win"/>
+	<property name="mac.trg" value="target/mac"/>
+	<property name="win.tmp" value="${win.trg}/tmp"/>
+	<property name="mac.tmp" value="${mac.trg}/tmp"/>
+	<property name="win.gdt" value="AlertCamera.gadget"/>
+	<property name="mac.gdt" value="AlertCamera.wdgt"/>
+	<property name="win.bin" value="${win.trg}/${win.gdt}"/>
+	<property name="mac.bin" value="${mac.trg}/${mac.gdt}"/>
 	
 	<tstamp>
 		<format property="year" pattern="yyyy"/>
@@ -94,13 +98,24 @@
 	
 	<target name="deploy" depends="package"
 			description="FTPs the binaries to esmithy.net for release">
+        <copy file="${win.tmp}/version.json" todir="${win.trg}"/>
 		<input message="Enter FTP password:" addproperty="ftp.password">
 			<handler classname="org.apache.tools.ant.input.SecureInputHandler" />
 		</input>
 		<ftp server="esmithy.net" userid="esmithynet" password="${ftp.password}"
 			 action="put" remotedir="/software_files/camera-gadget">
-			<fileset dir="." includes="${win.bin}, version.json"/>
+            <fileset dir="${win.trg}" includes="${win.gdt}, version.json"/>
 		</ftp>
+        <length file="${win.bin}" property="length.bytes" />        
+        <script language="javascript">
+            <![CDATA[
+                var length_bytes = project.getProperty("length.bytes");
+                var length_kbytes = Math.round((length_bytes / 1024) * Math.pow(10,2))
+                                  / Math.pow(10,2);
+                project.setNewProperty("length.kb", length_kbytes);
+            ]]>
+            </script>
+        <echo>Deployed version ${version} (${length.kb} KB)</echo>
 	</target>
 	
 </project>

@@ -74,11 +74,6 @@ function buildCameraList() {
 			showCameraSnapshot();
 			timeoutId = setTimeout(switchCamera, SWITCH_INTERVAL);
 			logger.log("cameras: %0", cameras);
-			
-			// Click goes to alert.logitech.com (Shell.execute uses default browser)
-			$('snapshot').observe('click', function (event) {
-				System.Shell.execute('http://alert.logitech.com')
-			});
 		},
 		function () {
 			logger.log("Error loading sites/cameras. Try %0", siteLoadTry);
@@ -189,6 +184,12 @@ function setupImageEvents() {
 	});
 }
 
+function setupClickEvent() {
+	// Click goes to alert.logitech.com (Shell.execute uses default browser)
+	$('snapshot').observe('click', function (event) {
+		System.Shell.execute('http://alert.logitech.com')
+	});
+}
 
 function loadMain() {
 	mockForBrowser();
@@ -215,5 +216,6 @@ function loadMain() {
 //	setupHover();
 	setupImageEvents();
 	showBusyMessage();
+	setupClickEvent();
 	login();
 }

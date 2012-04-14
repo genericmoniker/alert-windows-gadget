@@ -4,4 +4,5 @@ Alert Camera Gadget To Do
 [ ] Get the Mac version to work
 [ ] Minify all Javascript
 [ ] The spinner graphic seems to have some little glitches
-[ ] Victor had the camera image not aligning correctly with the undocked layout 
+[ ] Victor had the camera image not aligning correctly with the undocked layout
+[ ] As part of the deploy target, automatically copy the binary to the "deployed" directory 
